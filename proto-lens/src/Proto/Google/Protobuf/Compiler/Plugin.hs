@@ -1,6 +1,6 @@
 {- This file was auto-generated from google/protobuf/compiler/plugin.proto by the proto-lens-protoc program. -}
-{-# LANGUAGE ScopedTypeVariables, DataKinds, TypeFamilies,
-  UndecidableInstances, GeneralizedNewtypeDeriving,
+{-# LANGUAGE ScopedTypeVariables, OverloadedStrings, DataKinds,
+  TypeFamilies, UndecidableInstances, GeneralizedNewtypeDeriving,
   MultiParamTypeClasses, FlexibleContexts, FlexibleInstances,
   PatternSynonyms, MagicHash, NoImplicitPrelude, DataKinds,
   BangPatterns, TypeApplications #-}
@@ -51,17 +51,18 @@ import qualified Proto.Google.Protobuf.Descriptor
     * 'Proto.Google.Protobuf.Compiler.Plugin_Fields.compilerVersion' @:: Lens' CodeGeneratorRequest Version@
     * 'Proto.Google.Protobuf.Compiler.Plugin_Fields.maybe'compilerVersion' @:: Lens' CodeGeneratorRequest (Prelude.Maybe Version)@
  -}
-data CodeGeneratorRequest = CodeGeneratorRequest{_CodeGeneratorRequest'fileToGenerate
-                                                 :: !(Data.Vector.Vector Data.Text.Text),
-                                                 _CodeGeneratorRequest'parameter ::
-                                                 !(Prelude.Maybe Data.Text.Text),
-                                                 _CodeGeneratorRequest'protoFile ::
-                                                 !(Data.Vector.Vector
-                                                     Proto.Google.Protobuf.Descriptor.FileDescriptorProto),
-                                                 _CodeGeneratorRequest'compilerVersion ::
-                                                 !(Prelude.Maybe Version),
-                                                 _CodeGeneratorRequest'_unknownFields ::
-                                                 !Data.ProtoLens.FieldSet}
+data CodeGeneratorRequest = CodeGeneratorRequest'_constructor{_CodeGeneratorRequest'fileToGenerate
+                                                              ::
+                                                              !(Data.Vector.Vector Data.Text.Text),
+                                                              _CodeGeneratorRequest'parameter ::
+                                                              !(Prelude.Maybe Data.Text.Text),
+                                                              _CodeGeneratorRequest'protoFile ::
+                                                              !(Data.Vector.Vector
+                                                                  Proto.Google.Protobuf.Descriptor.FileDescriptorProto),
+                                                              _CodeGeneratorRequest'compilerVersion
+                                                              :: !(Prelude.Maybe Version),
+                                                              _CodeGeneratorRequest'_unknownFields
+                                                              :: !Data.ProtoLens.FieldSet}
                               deriving (Prelude.Eq, Prelude.Ord)
 instance Prelude.Show CodeGeneratorRequest where
         showsPrec _ __x __s
@@ -182,12 +183,14 @@ instance Data.ProtoLens.Message CodeGeneratorRequest where
           = Lens.Family2.Unchecked.lens _CodeGeneratorRequest'_unknownFields
               (\ x__ y__ -> x__{_CodeGeneratorRequest'_unknownFields = y__})
         defMessage
-          = CodeGeneratorRequest{_CodeGeneratorRequest'fileToGenerate =
-                                   Data.Vector.Generic.empty,
-                                 _CodeGeneratorRequest'parameter = Prelude.Nothing,
-                                 _CodeGeneratorRequest'protoFile = Data.Vector.Generic.empty,
-                                 _CodeGeneratorRequest'compilerVersion = Prelude.Nothing,
-                                 _CodeGeneratorRequest'_unknownFields = ([])}
+          = CodeGeneratorRequest'_constructor{_CodeGeneratorRequest'fileToGenerate
+                                                = Data.Vector.Generic.empty,
+                                              _CodeGeneratorRequest'parameter = Prelude.Nothing,
+                                              _CodeGeneratorRequest'protoFile =
+                                                Data.Vector.Generic.empty,
+                                              _CodeGeneratorRequest'compilerVersion =
+                                                Prelude.Nothing,
+                                              _CodeGeneratorRequest'_unknownFields = ([])}
         parseMessage
           = let loop ::
                      CodeGeneratorRequest ->
@@ -374,12 +377,13 @@ instance Control.DeepSeq.NFData CodeGeneratorRequest where
     * 'Proto.Google.Protobuf.Compiler.Plugin_Fields.vec'file' @:: Lens' CodeGeneratorResponse
   (Data.Vector.Vector CodeGeneratorResponse'File)@
  -}
-data CodeGeneratorResponse = CodeGeneratorResponse{_CodeGeneratorResponse'error
-                                                   :: !(Prelude.Maybe Data.Text.Text),
-                                                   _CodeGeneratorResponse'file ::
-                                                   !(Data.Vector.Vector CodeGeneratorResponse'File),
-                                                   _CodeGeneratorResponse'_unknownFields ::
-                                                   !Data.ProtoLens.FieldSet}
+data CodeGeneratorResponse = CodeGeneratorResponse'_constructor{_CodeGeneratorResponse'error
+                                                                :: !(Prelude.Maybe Data.Text.Text),
+                                                                _CodeGeneratorResponse'file ::
+                                                                !(Data.Vector.Vector
+                                                                    CodeGeneratorResponse'File),
+                                                                _CodeGeneratorResponse'_unknownFields
+                                                                :: !Data.ProtoLens.FieldSet}
                                deriving (Prelude.Eq, Prelude.Ord)
 instance Prelude.Show CodeGeneratorResponse where
         showsPrec _ __x __s
@@ -445,10 +449,11 @@ instance Data.ProtoLens.Message CodeGeneratorResponse where
           = Lens.Family2.Unchecked.lens _CodeGeneratorResponse'_unknownFields
               (\ x__ y__ -> x__{_CodeGeneratorResponse'_unknownFields = y__})
         defMessage
-          = CodeGeneratorResponse{_CodeGeneratorResponse'error =
-                                    Prelude.Nothing,
-                                  _CodeGeneratorResponse'file = Data.Vector.Generic.empty,
-                                  _CodeGeneratorResponse'_unknownFields = ([])}
+          = CodeGeneratorResponse'_constructor{_CodeGeneratorResponse'error =
+                                                 Prelude.Nothing,
+                                               _CodeGeneratorResponse'file =
+                                                 Data.Vector.Generic.empty,
+                                               _CodeGeneratorResponse'_unknownFields = ([])}
         parseMessage
           = let loop ::
                      CodeGeneratorResponse ->
@@ -554,14 +559,21 @@ instance Control.DeepSeq.NFData CodeGeneratorResponse where
     * 'Proto.Google.Protobuf.Compiler.Plugin_Fields.content' @:: Lens' CodeGeneratorResponse'File Data.Text.Text@
     * 'Proto.Google.Protobuf.Compiler.Plugin_Fields.maybe'content' @:: Lens' CodeGeneratorResponse'File (Prelude.Maybe Data.Text.Text)@
  -}
-data CodeGeneratorResponse'File = CodeGeneratorResponse'File{_CodeGeneratorResponse'File'name
-                                                             :: !(Prelude.Maybe Data.Text.Text),
-                                                             _CodeGeneratorResponse'File'insertionPoint
-                                                             :: !(Prelude.Maybe Data.Text.Text),
-                                                             _CodeGeneratorResponse'File'content ::
-                                                             !(Prelude.Maybe Data.Text.Text),
-                                                             _CodeGeneratorResponse'File'_unknownFields
-                                                             :: !Data.ProtoLens.FieldSet}
+data CodeGeneratorResponse'File = CodeGeneratorResponse'File'_constructor{_CodeGeneratorResponse'File'name
+                                                                          ::
+                                                                          !(Prelude.Maybe
+                                                                              Data.Text.Text),
+                                                                          _CodeGeneratorResponse'File'insertionPoint
+                                                                          ::
+                                                                          !(Prelude.Maybe
+                                                                              Data.Text.Text),
+                                                                          _CodeGeneratorResponse'File'content
+                                                                          ::
+                                                                          !(Prelude.Maybe
+                                                                              Data.Text.Text),
+                                                                          _CodeGeneratorResponse'File'_unknownFields
+                                                                          ::
+                                                                          !Data.ProtoLens.FieldSet}
                                     deriving (Prelude.Eq, Prelude.Ord)
 instance Prelude.Show CodeGeneratorResponse'File where
         showsPrec _ __x __s
@@ -657,11 +669,14 @@ instance Data.ProtoLens.Message CodeGeneratorResponse'File where
               (\ x__ y__ ->
                  x__{_CodeGeneratorResponse'File'_unknownFields = y__})
         defMessage
-          = CodeGeneratorResponse'File{_CodeGeneratorResponse'File'name =
-                                         Prelude.Nothing,
-                                       _CodeGeneratorResponse'File'insertionPoint = Prelude.Nothing,
-                                       _CodeGeneratorResponse'File'content = Prelude.Nothing,
-                                       _CodeGeneratorResponse'File'_unknownFields = ([])}
+          = CodeGeneratorResponse'File'_constructor{_CodeGeneratorResponse'File'name
+                                                      = Prelude.Nothing,
+                                                    _CodeGeneratorResponse'File'insertionPoint =
+                                                      Prelude.Nothing,
+                                                    _CodeGeneratorResponse'File'content =
+                                                      Prelude.Nothing,
+                                                    _CodeGeneratorResponse'File'_unknownFields =
+                                                      ([])}
         parseMessage
           = let loop ::
                      CodeGeneratorResponse'File ->
@@ -800,12 +815,12 @@ instance Control.DeepSeq.NFData CodeGeneratorResponse'File where
     * 'Proto.Google.Protobuf.Compiler.Plugin_Fields.suffix' @:: Lens' Version Data.Text.Text@
     * 'Proto.Google.Protobuf.Compiler.Plugin_Fields.maybe'suffix' @:: Lens' Version (Prelude.Maybe Data.Text.Text)@
  -}
-data Version = Version{_Version'major ::
-                       !(Prelude.Maybe Data.Int.Int32),
-                       _Version'minor :: !(Prelude.Maybe Data.Int.Int32),
-                       _Version'patch :: !(Prelude.Maybe Data.Int.Int32),
-                       _Version'suffix :: !(Prelude.Maybe Data.Text.Text),
-                       _Version'_unknownFields :: !Data.ProtoLens.FieldSet}
+data Version = Version'_constructor{_Version'major ::
+                                    !(Prelude.Maybe Data.Int.Int32),
+                                    _Version'minor :: !(Prelude.Maybe Data.Int.Int32),
+                                    _Version'patch :: !(Prelude.Maybe Data.Int.Int32),
+                                    _Version'suffix :: !(Prelude.Maybe Data.Text.Text),
+                                    _Version'_unknownFields :: !Data.ProtoLens.FieldSet}
                  deriving (Prelude.Eq, Prelude.Ord)
 instance Prelude.Show Version where
         showsPrec _ __x __s
@@ -909,9 +924,9 @@ instance Data.ProtoLens.Message Version where
           = Lens.Family2.Unchecked.lens _Version'_unknownFields
               (\ x__ y__ -> x__{_Version'_unknownFields = y__})
         defMessage
-          = Version{_Version'major = Prelude.Nothing,
-                    _Version'minor = Prelude.Nothing, _Version'patch = Prelude.Nothing,
-                    _Version'suffix = Prelude.Nothing, _Version'_unknownFields = ([])}
+          = Version'_constructor{_Version'major = Prelude.Nothing,
+                                 _Version'minor = Prelude.Nothing, _Version'patch = Prelude.Nothing,
+                                 _Version'suffix = Prelude.Nothing, _Version'_unknownFields = ([])}
         parseMessage
           = let loop ::
                      Version -> Data.ProtoLens.Encoding.Bytes.Parser Version

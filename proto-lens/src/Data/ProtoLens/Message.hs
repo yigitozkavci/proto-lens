@@ -88,7 +88,7 @@ class Message msg where
     -- which use their Message type name in text protos instead of their
     -- field name. For example, "optional group Foo" has the field name "foo"
     -- but in this map it is stored with the key "Foo".
-    fieldsByTextFormatName :: Map String (FieldDescriptor msg)
+    fieldsByTextFormatName :: Map T.Text (FieldDescriptor msg)
     fieldsByTextFormatName =
         Map.fromList [(n, f) | f@(FieldDescriptor n _ _) <- allFields]
 
@@ -118,12 +118,12 @@ type FieldSet = [TaggedValue]
 -- 'fieldsByTextFormatName'.
 -- (Haddock doesn't support per-argument docs for GADTs.)
 data FieldDescriptor msg where
-    FieldDescriptor :: String
+    FieldDescriptor :: T.Text
                     -> FieldTypeDescriptor value -> FieldAccessor msg value
                     -> FieldDescriptor msg
 
 -- | The original name of the field in the .proto file.
-fieldDescriptorName :: FieldDescriptor msg -> String
+fieldDescriptorName :: FieldDescriptor msg -> T.Text
 fieldDescriptorName (FieldDescriptor name _ _) = name
 
 -- | Whether the given field is required.  Specifically, if its 'FieldAccessor'

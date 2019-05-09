@@ -11,6 +11,7 @@
 {-# LANGUAGE PatternGuards #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE ViewPatterns #-}
 
 module Data.ProtoLens.TextFormat(
     showMessage,
@@ -33,9 +34,9 @@ import qualified Data.Map as Map
 import Data.Maybe (catMaybes)
 import Data.Proxy (Proxy(Proxy))
 import qualified Data.Set as Set
-import qualified Data.Text.Encoding as Text
+import qualified Data.Text.Encoding as T
 import qualified Data.Text.Lazy as Lazy
-import qualified Data.Text as Text (unpack)
+import qualified Data.Text as T
 import Numeric (showOct)
 import Text.Parsec (parse)
 import Text.PrettyPrint
@@ -110,23 +111,23 @@ pprintField reg msg (FieldDescriptor name typeDescr accessor)
                                     & k .~ x
                                     & v .~ y
 
-pprintFieldValue :: Registry -> String -> FieldTypeDescriptor value -> value -> Doc
+pprintFieldValue :: Registry -> T.Text -> FieldTypeDescriptor value -> value -> Doc
 pprintFieldValue reg name field@(MessageField MessageType) m
   | Just AnyMessageDescriptor { anyTypeUrlLens, anyValueLens } <- matchAnyMessage field,
     typeUri <- view anyTypeUrlLens m,
     fieldData <- view anyValueLens m,
     Just (SomeMessageType (Proxy :: Proxy value')) <- lookupRegistered typeUri reg,
     Right (anyValue :: value') <- decodeMessage fieldData =
-      pprintSubmessage name
+      pprintSubmessage (T.unpack name)
           $ sep
-            [ lbrack <> text (Text.unpack typeUri) <> rbrack <+> lbrace
+            [ lbrack <> text (T.unpack typeUri) <> rbrack <+> lbrace
             , nest 2 (pprintMessageWithRegistry reg anyValue)
             , rbrace ]
   | otherwise =
-      pprintSubmessage name (pprintMessageWithRegistry reg m)
+      pprintSubmessage (T.unpack name) (pprintMessageWithRegistry reg m)
 pprintFieldValue reg name (MessageField GroupType) m
-    = pprintSubmessage name (pprintMessageWithRegistry reg m)
-pprintFieldValue _ name (ScalarField f) x = named name $ pprintScalarValue f x
+    = pprintSubmessage (T.unpack name) (pprintMessageWithRegistry reg m)
+pprintFieldValue _ name (ScalarField f) x = named (T.unpack name) $ pprintScalarValue f x
 
 named :: String -> Doc -> Doc
 named n x = text n <> colon <+> x
@@ -147,7 +148,7 @@ pprintScalarValue SFixed64Field x = primField x
 pprintScalarValue FloatField x = primField x
 pprintScalarValue DoubleField x = primField x
 pprintScalarValue BoolField x = boolValue x
-pprintScalarValue StringField x = pprintByteString (Text.encodeUtf8 x)
+pprintScalarValue StringField x = pprintByteString (T.encodeUtf8 x)
 pprintScalarValue BytesField x = pprintByteString x
 
 pprintSubmessage :: String -> Doc -> Doc
@@ -227,15 +228,15 @@ buildMessage reg fields
     | otherwise = reverseRepeatedFields fieldsByTag
                       <$> buildMessageFromDescriptor reg defMessage fields
 
-missingFields :: forall msg . Message msg => Proxy msg -> Parser.Message -> [String]
+missingFields :: forall msg . Message msg => Proxy msg -> Parser.Message -> [T.Text]
 missingFields _ = Set.toList . foldl' deleteField requiredFieldNames
   where
-    requiredFieldNames :: Set.Set String
+    requiredFieldNames :: Set.Set T.Text
     requiredFieldNames = Set.fromList $ Map.keys
                             $ Map.filter isRequired
                             $ fieldsByTextFormatName @msg
-    deleteField :: Set.Set String -> Parser.Field -> Set.Set String
-    deleteField fs (Parser.Field (Parser.Key name) _) = Set.delete name fs
+    deleteField :: Set.Set T.Text -> Parser.Field -> Set.Set T.Text
+    deleteField fs (Parser.Field (Parser.Key name) _) = Set.delete (T.pack name) fs
     deleteField fs (Parser.Field (Parser.UnknownKey n) _)
         | Just d <- Map.lookup (Tag (fromIntegral n)) (fieldsByTag @msg)
         = Set.delete (fieldDescriptorName d) fs
@@ -253,7 +254,7 @@ addField reg msg (Parser.Field key rawValue) = do
     return $ modifyField accessor value msg
   where
     getFieldDescriptor
-        | Parser.Key name <- key, Just f <- Map.lookup name
+        | Parser.Key name <- key, Just f <- Map.lookup (T.pack name)
                                                 fieldsByTextFormatName
             = return f
         | Parser.UnknownKey tag <- key, Just f <- Map.lookup (fromIntegral tag)
@@ -269,8 +270,9 @@ modifyField (MapField key value f) mapElem
     = over f (Map.insert (mapElem ^. key) (mapElem ^. value))
 
 makeValue
-    :: forall value
-     . String -- ^ name of field
+    :: forall value name
+     . Show name
+    => name -- ^ name of field
     -> Registry
     -> FieldTypeDescriptor value
     -> Parser.Value
@@ -320,7 +322,7 @@ makeScalarValue BoolField (Parser.EnumValue x)
     | x == "true" = Right True
     | x == "false" = Right False
     | otherwise = Left $ "Unrecognized bool value " ++ show x
-makeScalarValue StringField (Parser.ByteStringValue x) = Right (Text.decodeUtf8 x)
+makeScalarValue StringField (Parser.ByteStringValue x) = Right (T.decodeUtf8 x)
 makeScalarValue BytesField (Parser.ByteStringValue x) = Right x
 makeScalarValue EnumField (Parser.IntValue x) =
     maybe (Left $ "Unrecognized enum value " ++ show x) Right

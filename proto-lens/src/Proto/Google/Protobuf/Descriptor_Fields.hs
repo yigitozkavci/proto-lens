@@ -1,6 +1,6 @@
 {- This file was auto-generated from google/protobuf/descriptor.proto by the proto-lens-protoc program. -}
-{-# LANGUAGE ScopedTypeVariables, DataKinds, TypeFamilies,
-  UndecidableInstances, GeneralizedNewtypeDeriving,
+{-# LANGUAGE ScopedTypeVariables, OverloadedStrings, DataKinds,
+  TypeFamilies, UndecidableInstances, GeneralizedNewtypeDeriving,
   MultiParamTypeClasses, FlexibleContexts, FlexibleInstances,
   PatternSynonyms, MagicHash, NoImplicitPrelude, DataKinds,
   BangPatterns, TypeApplications #-}

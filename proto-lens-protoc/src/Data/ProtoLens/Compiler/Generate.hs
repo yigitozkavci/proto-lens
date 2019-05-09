@@ -83,7 +83,7 @@ generateModule modName imports modifyImport definitions importedEnv services
     fieldModName = modifyModuleName (++ "_Fields") modName
     pragmas =
           [ languagePragma $ map fromString
-              ["ScopedTypeVariables", "DataKinds", "TypeFamilies",
+              ["ScopedTypeVariables", "OverloadedStrings", "DataKinds", "TypeFamilies",
                "UndecidableInstances", "GeneralizedNewtypeDeriving",
                "MultiParamTypeClasses", "FlexibleContexts", "FlexibleInstances",
                "PatternSynonyms", "MagicHash", "NoImplicitPrelude",

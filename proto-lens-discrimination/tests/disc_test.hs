@@ -6,6 +6,7 @@ import Control.Applicative ((<$>))
 import Data.Discrimination (Sort, runSort, sorting1)
 import Data.Int (Int32)
 import Data.List (sortBy)
+import qualified Data.Text as T
 import Lens.Family2 (Lens', (&), (^.), (.~))
 import Test.HUnit ((@=?), Assertion)
 import Test.Framework (testGroup, defaultMain)
@@ -109,7 +110,7 @@ fieldSortTest = testProperty "compares by field" $
         == sortCompare (sortingField fieldDesc) msg1 msg2
   where
     fieldDesc =
-      (fieldsByTextFormatName :: M.Map String (FieldDescriptor Foo)) M.! "bar"
+      (fieldsByTextFormatName :: M.Map T.Text (FieldDescriptor Foo)) M.! "bar"
 
 messageSortTest :: Test
 messageSortTest = testGroup "Message"
